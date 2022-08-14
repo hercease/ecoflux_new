@@ -14,6 +14,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import Button from '@mui/material/Button';
 import { green } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
+import Script from "next/script"
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(green[500]),
@@ -29,13 +30,47 @@ export default function Login() {
   return (
 	<>
 	
-	<Head>
+		<Head>
 		<meta charSet="utf-8" />
 		<title>Ecoflux | Login</title>
-		<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no" />
-		<meta name="description" content="" />
+		<meta name="description" content="Africa's No 1 Solar Marketplace" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Ecoflux" />
+		<meta property="og:description" content="Africa's No 1 Solar Marketplace" />
+		<meta property="og:url" content="https://ecoflux.com/login" />
+		<meta property="og:site_name" content="Ecoflux" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Ecoflux" />
+		<meta name="twitter:description" content="Africa's No 1 Solar Marketplace" />
+		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
+		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
+		<script type="application/ld+json"
+			dangerouslySetInnerHTML= {{
+				__html: JSON.stringify({
+				"@context": "http://schema.org",
+				"@type": "Website",
+				"url": "https://ecoflux.com/login",
+				"potentialAction": { "@type": "SearchAction", "target": "https://ecoflux.com/{search_term_string}/", "query-input": "required name=search_term_string" },
+			  }),
+			}}
+		/>
+		<script type="application/ld+json"
+			dangerouslySetInnerHTML= {{
+				__html: JSON.stringify({
+				"@context": "http://schema.org",
+				"@type": "Orgnaization",
+				"url": "https://ecoflux.com/login",
+				"name": "Ecoflux",
+				"logo": "https://ecoflux.com/log.png"
+			  }),
+			}}
+		/>
 	</Head>
 	<div className="container">
 		<div className="row align-items-center vh-100">
@@ -43,9 +78,9 @@ export default function Login() {
 				<div className="card border-0">
 					<div className="card-body">
 						<div className="mb-3 mb-md-3 mt-auto">
-                            <a href="#" className="">
-                                <img src="log.png" alt="" height="60" className="text-center" />
-                            </a>
+                            <div style={{ width: '200px', height: '60px', position: 'relative' }}>
+                                <Image alt="image" src="/log.png" layout='fill' className="text-center" />
+                            </div>
                         </div>
 						<div className="mt-auto">
 							<div className="ms-auto p-2">

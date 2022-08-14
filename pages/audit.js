@@ -95,7 +95,7 @@ function Opencollapse(){
 	<>
 	<Head>
 		<meta charSet="utf-8" />
-		<title>Ecoflux | Home</title>
+		<title>Ecoflux | Audit</title>
 		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
@@ -105,7 +105,7 @@ function Opencollapse(){
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="Ecoflux" />
 		<meta property="og:description" content="Africa's No 1 Solar Marketplace" />
-		<meta property="og:url" content="https://ecoflux.com/" />
+		<meta property="og:url" content="https://ecoflux.com/audit" />
 		<meta property="og:site_name" content="Ecoflux" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="Ecoflux" />
@@ -113,22 +113,22 @@ function Opencollapse(){
 		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
 		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
-		<script type="application/ld+json"
+		<script id="my_first_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Website",
-				"url": "https://ecoflux.com",
+				"url": "https://ecoflux.com/about_us",
 				"potentialAction": { "@type": "SearchAction", "target": "https://ecoflux.com/{search_term_string}/", "query-input": "required name=search_term_string" },
 			  }),
 			}}
 		/>
-		<script type="application/ld+json"
+		<script id="my_second_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Orgnaization",
-				"url": "https://ecoflux.com",
+				"url": "https://ecoflux.com/about_us",
 				"name": "Ecoflux",
 				"logo": "https://ecoflux.com/log.png"
 			  }),
@@ -159,7 +159,7 @@ function Opencollapse(){
 				
 			</div>
 			<div className="col-md-5 col-xl-5 py-3 text-center">
-				<img className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/300/150" />
+				<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 			</div>
 		</div>
 	 </div>
@@ -228,7 +228,7 @@ function Opencollapse(){
           <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
             <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> Can't find what you looking for?
+              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
 				<ColorButton variant="contained"><EmailIcon />Send us an Email</ColorButton>
 			  </p>
 			
@@ -242,18 +242,10 @@ function Opencollapse(){
     </footer>
 	
 
-<script src="js/jquery-3.5.0.min.js" type="text/javascript"></script>
-<script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-<Script
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: `
-    document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
-    document.querySelector('.offcanvas-collapse').classList.toggle('open')
-  })
-`,
-  }}
-/>
+<Script id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
+<Script id="bootstrap_script" src="js/bootstrap.bundle.js" type="text/javascript"></Script>
+<Script id="my-script">{`document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
+    document.querySelector('.offcanvas-collapse').classList.toggle('open') })`}</Script>
 <style jsx>{`
 
 html,

@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { green, grey } from '@mui/material/colors';
 import Script from "next/script"
+import Image from 'next/image'
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -82,7 +83,7 @@ return (
 		<div className="col-12">
 			<nav style={{ background : '#f4f9e7' }}  className="navbar navbar-expand-lg fixed-top navbar-light" aria-label="Main navigation">
 				<div className="container">
-					<Link href="/"><a className="navbar-brand" href="#"><img src="log.png" alt="" height="50" className="text-center" /></a></Link>
+					<Link href="/"><a className="navbar-brand" href="#"><Image src="/log.png" alt="image" width={180} height={50} /></a></Link>
 					<button  className="navbar-toggler p-0 border-0" onClick={ Opencollapse } type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
 						<span className="navbar-toggler-icon"></span>
 					</button>
@@ -119,6 +120,7 @@ return (
 
 
 <Script
+id="my_script"
   strategy="afterInteractive"
   dangerouslySetInnerHTML={{
     __html: `

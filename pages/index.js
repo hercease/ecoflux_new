@@ -111,22 +111,22 @@ function Opencollapse(){
 		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
 		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
-		<script type="application/ld+json"
+		<script id="my_first_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Website",
-				"url": "https://ecoflux.com",
+				"url": "https://ecoflux.com/",
 				"potentialAction": { "@type": "SearchAction", "target": "https://ecoflux.com/{search_term_string}/", "query-input": "required name=search_term_string" },
 			  }),
 			}}
 		/>
-		<script type="application/ld+json"
+		<script id="my_second_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Orgnaization",
-				"url": "https://ecoflux.com",
+				"url": "https://ecoflux.com/",
 				"name": "Ecoflux",
 				"logo": "https://ecoflux.com/log.png"
 			  }),
@@ -155,7 +155,7 @@ function Opencollapse(){
 				
 			</div>
 			<div className="col-md-5 col-xl-5 py-3">
-				<img className="w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
+				<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 			</div>
 		</div>
 	 </div>
@@ -166,7 +166,7 @@ function Opencollapse(){
 		<div className="container">
 			<div className="row align-items-center vh-75">
 				<div className="col-md-6 col-xl-5 justify-content-center">
-					<img className="w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
+					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 				</div>
 				<div className="col-md-6 col-xl-5 py-3">
 					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Simplifying Access to Affordable and Reliable Energy</h2>
@@ -187,7 +187,7 @@ function Opencollapse(){
 			<div className="row align-items-center vh-75">
 				<div className="col-md-7 col-xl-7">
 					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Energy Assessment</h2>
-					<p className="py-2">Do a self-assessment of your energy needs and let's recommend a custom energy solution for you. With our solar calculate, you can directly calculate the power consumption of your devices and the total number lightning hours.</p>
+					<p className="py-2">Do a self-assessment of your energy needs and {`let's`} recommend a custom energy solution for you. With our solar calculate, you can directly calculate the power consumption of your devices and the total number lightning hours.</p>
 					<ul>
 						<li>Calculate your energy needs</li>
 						<li>Flexible Payment Plan (Pay As You Go)</li>
@@ -199,7 +199,7 @@ function Opencollapse(){
 					</Stack>
 				</div>
 				<div className="col-md-5 col-xl-5 py-3">
-					<img className="w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
+					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 				</div>
 			</div>
 		</div>
@@ -210,7 +210,7 @@ function Opencollapse(){
 		<div  className="container">
 			<div className="row align-items-center vh-75">
 				<div className="col-md-5 col-xl-5">
-					<img className="w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
+					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 				</div>
 				<div className="col-md-7 col-xl-7">
 					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Flexible Payment Plan(Pay As You Go)</h2>
@@ -278,7 +278,7 @@ function Opencollapse(){
           <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
             <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> Can't find what you looking for?
+              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
 				<ColorButton variant="contained"><EmailIcon />Send us an Email</ColorButton>
 			  </p>
 			
@@ -292,18 +292,11 @@ function Opencollapse(){
     </footer>
 	
 
-<script src="js/jquery-3.5.0.min.js" type="text/javascript"></script>
-<script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-<Script
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: `
-  document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
-    document.querySelector('.offcanvas-collapse').classList.toggle('open')
-  })
-`,
-  }}
-/>
+<Script id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
+<Script id="bootstrap_script" src="js/bootstrap.bundle.js" type="text/javascript"></Script>
+<Script id="my-script">{`document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
+    document.querySelector('.offcanvas-collapse').classList.toggle('open') })`}</Script>
+
 <style jsx>{`
 
 html,

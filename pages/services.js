@@ -63,8 +63,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
   color : "white",
   fontSize : 12,
+  width : 200,
   borderRadius : "33px",
-  size : "large",
   '&:hover': {
     backgroundColor: green[700],
   },
@@ -113,7 +113,7 @@ function Opencollapse(){
 		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
 		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
-		<script type="application/ld+json"
+		<script id="first_header_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
@@ -123,7 +123,7 @@ function Opencollapse(){
 			  }),
 			}}
 		/>
-		<script type="application/ld+json"
+		<script id="second_header_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
@@ -142,7 +142,7 @@ function Opencollapse(){
 			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
 				<div className="col-md-6 px-0">
 					<h2 style={{ color : "#4e5a62" }} className="fw-bold">Produce Your Own Clean Energy to Save the Environment</h2>
-					<p className="lead my-3 h6 mt-2">Solar is a great alternative for anyone who values independence and efficiency. Start using flexible, lightweight solar now.</p>
+					<p className="font-weight-bold my-3 mt-2">Solar is a great alternative for anyone who values independence and efficiency. Start using flexible, lightweight solar now.</p>
 				</div>
 			</div>
 		</div>
@@ -153,18 +153,25 @@ function Opencollapse(){
 		<div className="row align-items-center justify-content-md-center vh-75">
 			<div className="col-md-6 col-xl-6">
 				<h2 className="fw-bold text-center">Our Services</h2>
-				<p className="py-2 text-center">Ecoflux helps businesses and individuals in Africa meet their energy needs using 'renewable' Solar energy</p>
+				<p className="py-2 text-center">Ecoflux helps businesses and individuals in Africa meet their energy needs using {'renewable'} Solar energy</p>
 			</div>
 		</div>
 		<div className="row align-items-center justify-content-md-center">
-			<div className="col-md-4 col-xl-4 img-gradient">
-				<img width="400" style={{ borderRadius: "50px 50px 50px 50px" }} className="mb-4 w-100" src="https://picsum.photos/300/200?grayscale" />
+			<div className="col-md-4 col-xl-4 mb-3">
+				<div className="img-gradient">
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200?grayscale" />
+				</div>
 			</div>
-			<div className="col-md-4 col-xl-4 img-gradient">
-				<img width="400" style={{ borderRadius: "50px 50px 50px 50px" }} className="mb-4 w-100" src="https://picsum.photos/300/200" />
+			
+			<div className="col-md-4 col-xl-4 mb-3">
+				<div className="img-gradient">
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200" />
+				</div>
 			</div>
-			<div className="col-md-4 col-xl-4 img-gradient">
-				<img width="400" style={{ borderRadius: "50px 50px 50px 50px" }}  className="mb-4 w-100" src="https://picsum.photos/300/200" />
+			<div className="col-md-4 col-xl-4 mb-3">
+				<div className="img-gradient">
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200?grayscale" />
+				</div>
 			</div>
 		</div>
 	 </div>
@@ -293,8 +300,8 @@ function Opencollapse(){
           <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
             <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
             <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> Can't find what you looking for?
-				<ColorButton variant="contained"><EmailIcon />Send us an Email</ColorButton>
+              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
+				<ColorButton variant="contained" size="large"><EmailIcon />Send us an Email</ColorButton>
 			  </p>
 			
           </div>
@@ -307,18 +314,10 @@ function Opencollapse(){
     </footer>
 	
 
-<script src="js/jquery-3.5.0.min.js" type="text/javascript"></script>
-<script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-<Script
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: `
-    document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
-    document.querySelector('.offcanvas-collapse').classList.toggle('open')
-  })
-`,
-  }}
-/>
+<Script  id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
+<Script  id="bootstrap_script" src="js/bootstrap.bundle.js" type="text/javascript"></Script>
+<Script id="my-script">{`document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
+    document.querySelector('.offcanvas-collapse').classList.toggle('open') })`}</Script>
 <style jsx>{`
 
 html,
@@ -414,10 +413,10 @@ body {
 .img-gradient:after {
   content: "";
     position: absolute;
-    left: 13px;
+    left: 0px;
     top: 0;
-    width: 93%;
-    height: 93%;
+    width: 100%;
+    height: 100%;
     display: inline-block;
   border-radius: 0px 0px 50px 50px;
    background: -moz-linear-gradient(top, rgba(11,102,75,0.5) 0%, rgba(220, 66, 37, 0.5) 100%); /* FF3.6+ */
