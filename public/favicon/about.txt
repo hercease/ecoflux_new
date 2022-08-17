@@ -1,6 +1,6 @@
 This favicon was generated using the following font:
 
-- Font Title: Actor
-- Font Author: Copyright (c) 2011, Thomas Junold <hallo@buerofueraufmerksamkeit.de>, with Reserved Font Name "Actor".
-- Font Source: http://fonts.gstatic.com/s/actor/v17/wEOzEBbCkc5cO3ekXygtUMIO.ttf
+- Font Title: Jua
+- Font Author: Copyright 2018 The BM JUA Project Authors
+- Font Source: http://fonts.gstatic.com/s/jua/v13/co3KmW9ljjAjc-DZCsKgsg.ttf
 - Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

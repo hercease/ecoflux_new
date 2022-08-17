@@ -137,7 +137,7 @@ function Opencollapse(){
 	</Head>
 	<Navbar />
 	
-	<div style={{ backgroundImage : `url('https://picsum.photos/1600/400')` }} className="container-fluid mb-md-0 py-5">
+	<div style={{ backgroundImage : `url('https://picsum.photos/1600/400')` }} className="container-fluid mb-md-0 py-5 hero">
 		<div className="container">
 			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
 				<div className="col-md-6 px-0">

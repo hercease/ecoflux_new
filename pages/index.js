@@ -19,6 +19,17 @@ import Script from "next/script"
 import Stack from '@mui/material/Stack';
 import EmailIcon from '@mui/icons-material/Email';
 import Navbar from "../components/navbar.js"
+import Carousel from 'react-elastic-carousel'
+import {consts} from 'react-elastic-carousel'
+import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
+import CircleIcon from '@mui/icons-material/Circle';
+
+const breakPoints = [
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 2, itemsToScroll: 2 },
+  { width: 768, itemsToShow: 3 },
+  { width: 1200, itemsToShow: 4 }
+];
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -89,6 +100,15 @@ function Opencollapse(){
 	canvascollapseref.current.classList.toggle('open')
 }
 
+ const myArrow = ({ type, onClick, isEdge }) => {
+      const pointer = type === consts.PREV ? '👈' : '👉'
+      return (
+        <Button onClick={onClick} disabled={isEdge}>
+          {pointer}
+        </Button>
+      )
+    }
+
   return (
 	<>
 	<Head>
@@ -136,45 +156,72 @@ function Opencollapse(){
 	
 	<Navbar />
 	
-	<div style={{ background : '#f4f9e7' }} className="container-fluid mb-md-0 py-5">
-	<div  className="container">
-		<div className="row align-items-center vh-75">
-			<div className="col-md-7 col-xl-7">
-				<h2 className="fw-bold">Online marketplace for Africans seeking to meet their energy needs</h2>
-				<p className="py-2">Ecoflux helps businesses and Individuals in Africa meet their energy needs using `renewable` Solar energy</p>
-				<ul>
-					<li>Calculate your energy needs</li>
-					<li>Flexible Payment Plan (Pay As You Go)</li>
-					<li>Affiliate Program</li>
-				</ul>
+	<div className="container-fluid mb-md-0 py-5 hero">
+		<div className="container">
+			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
+				<div className="col-md-6 px-0">
+					<h2 className="fw-bold">Online solar Marketplace for Africans seeking to meet their energy needs</h2>
+					<p className="py-2">Ecoflux helps businesses and Individuals in Africa meet their energy needs using `renewable` Solar energy</p>
+					<ul>
+						<li>Ecoflux energy calculator</li>
+						<li>Flexible Payment Plan (Pay Small Small)</li>
+						<li>Energy as a Service(EAAS)</li>
+						<li>Affiliate Program</li>
+					</ul>
+					
+					<Stack spacing={2} direction="row">
+						<ColorButtonSecond variant="contained">Energy Audit</ColorButtonSecond>
+						<ColorButton variant="contained">Request for Installation</ColorButton>
+					</Stack>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div style={{ background : 'white' }} className="container-fluid mb-md-0  py-5">
+	<div className="container">
+		<div className="row align-items-center h-100">
+			<div className="col-md-6">
+				<h2 className="fw-bold">Energy Assessment</h2>
+				<p className="py-2">Do a self-assessment of your energy needs and {`let's`} recommend a custom energy solution for you. With our solar calculator, you can directly calculate the power consumption of your devices and the total number of lightning hours. </p>
 				
 				<Stack spacing={2} direction="row">
-				  <ColorButton variant="contained">Request for Installation</ColorButton>
-				  <ColorButtonSecond variant="contained">Energy Audit</ColorButtonSecond>
+				  <ColorButtonSecond variant="contained">Start now</ColorButtonSecond>
 				</Stack>
 				
 			</div>
-			<div className="col-md-5 col-xl-5 py-3">
-				<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
+			<div className="col-md-6 mt-2">
+				<div className="d-flex">
+					<div style={{ marginLeft:"20px 0px 0px 0px" }}>
+						<Image width={200} height={300} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/400/400" />
+					</div>
+					<div style={{ margin:"50px 0px 0px 50px" }}>
+						<Image width={200} height={300} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px", marginLeft: "10px" }} src="https://picsum.photos/400/400" />
+					</div>
+				</div>
 			</div>
+			
+			
 		</div>
 	 </div>
 		<br />
 	</div>
 	
-	<div style={{ background : '#fbfbf8' }} className="container-fluid mb-md-0 py-5">
+	<div style={{ background : '#4e5a62' }} className="container-fluid mb-md-0 py-5">
 		<div className="container">
-			<div className="row align-items-center vh-75">
+			<div className="row align-items-center h-100">
 				<div className="col-md-6 col-xl-5 justify-content-center">
 					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 				</div>
-				<div className="col-md-6 col-xl-5 py-3">
+				<div className="col-md-6 col-xl-7 py-3">
 					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Simplifying Access to Affordable and Reliable Energy</h2>
-					<p className="py-2">With Ecoflux, you can experience a 24/7 electricity supply, power all your gadgets and equipments. You never get to worry about the increasing cost of fueling or the defeaning noise of your generators!</p>
+					<p className="py-2 text-light">With Ecoflux, you can experience a 24/7 electricity supply, power all your gadgets and equipments. You never get to worry about the increasing cost of fueling or the defeaning noise of your generators!</p>
+					<p className="text-light">Ecoflux is poised to disrupt the energy industry with its innovation-driven solution that enables Africans to make a self-assessment of their energy needs, place an order online for their solar power components and get their products delivered at competitive prices, without stress.</p>
 					
 					
 					<Stack spacing={2} direction="row">
-					  <ColorButtonSecond variant="contained">Learn More</ColorButtonSecond>
+					  <ColorButton variant="contained">Learn More</ColorButton>
 					</Stack>
 				</div>
 			</div>
@@ -182,20 +229,15 @@ function Opencollapse(){
 		<br />
 	</div>
 	
-	<div style={{ background : '#fff8fa' }} className="container-fluid mb-md-0 py-5">
+	<div style={{ background : '#eeeeee00' }} className="container-fluid mb-md-0 py-5">
 		<div  className="container">
-			<div className="row align-items-center vh-75">
+			<div className="row align-items-center h-100">
 				<div className="col-md-7 col-xl-7">
-					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Energy Assessment</h2>
-					<p className="py-2">Do a self-assessment of your energy needs and {`let's`} recommend a custom energy solution for you. With our solar calculate, you can directly calculate the power consumption of your devices and the total number lightning hours.</p>
-					<ul>
-						<li>Calculate your energy needs</li>
-						<li>Flexible Payment Plan (Pay As You Go)</li>
-						<li>Affiliate Program</li>
-					</ul>
+					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Energy As a Service (EAAS)</h2>
+					<p className="py-2">At Ecoflux, we take care of all your energy power and energy concerns by empowering your homes, stores and businesses withour clean energy solutions. By selecting our Energy as a Service EAAS option, you are guaramteed clean and reliable power without the burden and hassle of installing, maintaining or even owning a solar/powe solution. Begin to enjoy power today at zero upfront cost. You only pay an agrees tariff based on the solution deployed.</p>
 					
 					<Stack spacing={2} direction="row">
-					  <ColorButtonSecond variant="contained">Start Now</ColorButtonSecond>
+					  <ColorButtonSecond variant="contained">Get Started Now</ColorButtonSecond>
 					</Stack>
 				</div>
 				<div className="col-md-5 col-xl-5 py-3">
@@ -206,28 +248,93 @@ function Opencollapse(){
 		
 	</div>
 	
-	<div style={{ background : '#f4f9e7' }} className="container-fluid py-5">
+	<div style={{ background : 'rgb(232 255 171)' }} className="container-fluid py-5">
 		<div  className="container">
-			<div className="row align-items-center vh-75">
+			<div className="row align-items-center h-100">
 				<div className="col-md-5 col-xl-5">
 					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
 				</div>
 				<div className="col-md-7 col-xl-7">
-					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Flexible Payment Plan(Pay As You Go)</h2>
+					<h2 style={{ color : "#4e5a62" }} className="fw-bold">Flexible Payment Plan(Pay Small Small)</h2>
 					<p className="py-2">Our Pay As You Go payment model empowers our customers to pay in instalments by spreading the payments over a period of time</p>
-					<ul>
-						<li>Calculate your energy needs</li>
-						<li>Flexible Payment Plan (Pay As You Go)</li>
-						<li>Affiliate Program</li>
-					</ul>
 					
 					<Stack spacing={2} direction="row">
-					  <ColorButtonSecond variant="contained">Learn More</ColorButtonSecond>
+					  <ColorButtonSecond variant="contained">Start Now</ColorButtonSecond>
 					</Stack>
 				</div>
 			</div>
 		</div>
 		
+	</div>
+	
+	<div style={{ background : '#fff8fa' }} className="container-fluid justify-content-md-center mb-md-0 py-5">
+		<div  className="container">
+			<div className="row align-items-center justify-content-md-center vh-75">
+				<div className="col-md-6 col-xl-6">
+					<h2 className="fw-bold text-center">Our Testimonials</h2>
+					<p className="py-2 text-center"></p>
+				</div>
+			</div>
+			<div className="row align-items-center justify-content-md-center">
+				<div className="col-md-12">
+					<Carousel breakPoints={breakPoints} showArrows={false} renderArrow={myArrow}
+						renderPagination={({ pages, activePage, onClick }) => {
+							return (
+							  <div className="d-flex">
+								{pages.map(page => {
+								  const isActivePage = activePage === page
+								  return (
+									<CircleIcon
+									  key={page}
+									  onClick={() => onClick(page)}
+									  active={`$isActivePage`}
+									  sx={{ color: "#b4ff00" }}
+									/>
+								  )
+								})}
+							  </div>
+							)
+						  }}
+					>
+						<div style={{ borderRadius: "20px 20px 20px 20px" }} className="card border-0 bg-light">
+							<div className="card-body">
+								<div className="text">Hello everybody, hope you are doing good at all times, i so much love this platform so much that i can not take my eyes off it any seconds</div>
+								<div className="d-flex mt-3">
+									<div style={{ border: "2px lime solid", borderRadius:"50%", overflow: 'hidden', width: "80px", height:"80px"    }}>
+										<Image objectFit="cover" width={80} height={80} alt="image" className="rounded-circle border" src="https://picsum.photos/250/150" />
+									</div>
+									<div style={{marginLeft: "14px"}} className="align-self-center">
+										<h5 className="my-0">Temitayo Ayodele</h5>
+										<p>Delar Incoporation</p>
+									</div>
+									<div className="align-self-center mx-auto"><FormatQuoteRoundedIcon fontSize="large" sx={{ fontSize: 85, color:"#b4ff00" }} /></div>
+								</div>
+							</div>
+						</div>
+						<div className="card bg-light rounded-pills">
+							<div className="card-body">
+								2
+							</div>
+						</div>
+						<div className="card bg-light rounded-pills">
+							<div className="card-body">
+								3
+							</div>
+						</div>
+						<div className="card bg-light rounded-pills">
+							<div className="card-body">
+								4
+							</div>
+						</div>
+						<div className="card bg-light rounded-pills">
+							<div className="card-body">
+								5
+							</div>
+						</div>
+					</Carousel>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<footer className="page-footer font-small mdb-color pt-4" style={{ paddingLeft: "0px", background : '#4e5a62' }}>
@@ -290,6 +397,17 @@ function Opencollapse(){
      
 
     </footer>
+	
+	
+		<div className="container-fluid bg-dark">
+			<div className="container">
+				<div style={{ height:100 }} className="row align-items-center text-white">
+					<div className="col-md-12">
+						<p className="text-white">Copyright &copy; 2022 All rights reserved</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	
 
 <Script id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
@@ -383,6 +501,22 @@ body {
 .page-footer h6{
 	color : #c0de06;
 }
+
+li::marker 
+{
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.hero{
+	background-image: linear-gradient(to right,rgb(255 255 255),#ff9e0070),url(https://picsum.photos/1600/400);
+	background-size : cover
+}
+
+.my_image{
+	border: 3px solid #dee2e6!important;
+}
+
 
 
 
