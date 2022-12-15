@@ -5,6 +5,16 @@ import Button from '@mui/material/Button';
 import { green, grey } from '@mui/material/colors';
 import Script from "next/script"
 import Image from 'next/image'
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
+import UploadIcon from '@mui/icons-material/Upload';
+import PersonIcon from '@mui/icons-material/Person';
+import axios from "axios";
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
+import Router, { useRouter } from 'next/router'
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -69,12 +79,30 @@ const ColorButtonSecond = styled(Button)(({ theme }) => ({
 
 export default function Navbar() {
 	
+	const router = useRouter();
 	const canvasbuttonref = useRef();
 	const canvascollapseref = useRef();
+	const [user, setUser] = useState([])
+	const cookies = getCookie('ecotoken') || "";
 	
 	function Opencollapse(){
 		canvascollapseref.current.classList.toggle('open')
 	}
+	
+  
+    async function getProfile(value){
+        await axios.post(`${process.env.dbname}/ecoflux/api/fetchprofile/`, { email : value } ).then(function(response){
+            setUser(response.data.result);
+        });
+    }
+	
+	useEffect(() => {
+	   if(cookies){
+		getProfile(cookies);
+	   }
+	}, [cookies]);
+
+	
 return (
 <>
 
@@ -93,23 +121,45 @@ return (
 							  <Link href="/about_us"><a className="nav-link fw-bold">About us</a></Link>
 							</li>
 							<li className="nav-item px-3">
-							  <a className="nav-link fw-bold" href="#">Products</a>
+							  <Link href="/services"><a className="nav-link fw-bold">Our Services</a></Link>
 							</li>
 							<li className="nav-item px-3">
-							  <Link href="/services"><a className="nav-link fw-bold">Services</a></Link>
+							  <Link href="/shop"><a className="nav-link fw-bold text-success-light">Shop</a></Link>
 							</li>
 							<li className="nav-item px-3">
-								<Link href="/audit"><a className="nav-link fw-bold" href="#">Energy Audit</a></Link>
+							  <Link href="/category"><a className="nav-link fw-bold text-success-light">Categories</a></Link>
 							</li>
-							<li className="nav-item px-3">
-							  <a className="nav-link fw-bold text-success-light" href="#">Shop</a>
+							
+							{ user == "" ?
+
+							<>
+								<li className="nav-item px-3">
+								 <Link href="/login"><a className="nav-link active fw-bold" aria-current="page">Sign in</a></Link>
+								</li>
+								<li className="nav-item px-3">
+								  <Link href="/register"><ColorButton variant="contained">Sign up</ColorButton></Link>
+								</li>
+							</>					
+							
+							: 
+							
+							<li className="nav-item dropdown px-3 fw-bold">
+							  <a className="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								 Account
+							  </a>
+							  <ul className="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+								<li><Link href="/profile"><a className="dropdown-item"><AccountCircle /> My Profile</a></Link></li>
+								<li><Link href="/cart"><a className="dropdown-item" href="#"><ShoppingCartCheckoutIcon /> Cart <span className="badge text-bg-secondary float-end">{user.total_cart_count}</span></a></Link></li>
+								<li><a className="dropdown-item" href="#"><LocalShippingRoundedIcon /> Orders</a></li>
+								<li><Link href="/upload_product"><a className="dropdown-item" href="#"><UploadIcon /> Upload product</a></Link></li>
+								<li><Link href="/my_products"><a className="dropdown-item" href="#"><PersonIcon /> My products</a></Link></li>
+								<li><hr className="dropdown-divider" /></li>
+								<li><a className="dropdown-item" onClick={function(event){ destroyCookie(null, 'ecotoken'); router.push('/login'); }}><ExitToAppIcon /> Logout</a></li>
+							  </ul>
 							</li>
-							<li className="nav-item px-3">
-							 <Link href="/login"><a className="nav-link active fw-bold" aria-current="page">Sign in</a></Link>
-							</li>
-							<li className="nav-item px-3">
-							  <Link href="/register"><ColorButton variant="contained">Sign up</ColorButton></Link>
-							</li>
+							
+							}
+							
 						</ul>
 					</div>
 				</div>
@@ -145,7 +195,7 @@ body {
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
     position: fixed;
-    top: 56px; /* Height of navbar */
+    top: 83px; /* Height of navbar */
     bottom: 0;
     left: 100%;
     width: 100%;
@@ -217,9 +267,13 @@ body {
 	color : #c0de06;
 }
 
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #6c757d;
+}
 
-
-	
 `}
 </style>
 

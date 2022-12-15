@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, ReactDOM } from "react";
+import React, { useRef, useState, useEffect, ReactDOM, Suspense } from "react";
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -15,27 +15,37 @@ import Button from '@mui/material/Button';
 import { green, grey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Script from "next/script"
 import Stack from '@mui/material/Stack';
 import EmailIcon from '@mui/icons-material/Email';
 import Navbar from "../components/navbar.js"
+import Homecarousel from "../components/carousel.js"
+import Owl from "../components/owl.js"
+import Footer from "../components/footer.js"
 import Carousel from 'react-elastic-carousel'
 import {consts} from 'react-elastic-carousel'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
+import { getCookies, getCookie, deleteCookie } from 'cookies-next';
 import FormatQuoteRoundedIcon from '@mui/icons-material/FormatQuoteRounded';
 import CircleIcon from '@mui/icons-material/Circle';
+import axios from "axios";
+import dynamic from 'next/dynamic';
+import $ from 'jquery';
+import Router, { useRouter } from 'next/router'
 
 const breakPoints = [
   { width: 1, itemsToShow: 1 },
   { width: 550, itemsToShow: 2, itemsToScroll: 2 },
-  { width: 768, itemsToShow: 3 },
-  { width: 1200, itemsToShow: 4 }
+  { width: 768, itemsToShow: 2 },
+  { width: 1200, itemsToShow: 3 }
 ];
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
   textTransform: 'none',
   fontSize: 16,
-  padding: '6px 12px',
+  padding: '6px 10px',
   border: '1px solid',
   lineHeight: 1.5,
   backgroundColor: '#0063cc',
@@ -83,6 +93,7 @@ const ColorButtonSecond = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(grey[500]),
   backgroundColor: "#4e5a62",
   textTransform: 'none',
+  padding: '6px 10px',
   color : "white",
   borderRadius : "33px",
   fontSize : 12,
@@ -91,14 +102,18 @@ const ColorButtonSecond = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({data,category}) {
 	
 	const canvasbuttonref = useRef();
 	const canvascollapseref = useRef();
+	const router = useRouter();
 	
 function Opencollapse(){
 	canvascollapseref.current.classList.toggle('open')
 }
+
+const user = data
+
 
  const myArrow = ({ type, onClick, isEdge }) => {
       const pointer = type === consts.PREV ? '👈' : '👉'
@@ -108,6 +123,7 @@ function Opencollapse(){
         </Button>
       )
     }
+
 
   return (
 	<>
@@ -154,263 +170,65 @@ function Opencollapse(){
 		/>
 	</Head>
 	
-	<Navbar />
-	
-	<div className="container-fluid mb-md-0 py-5 hero">
+	<Navbar user={user} />
+ 
+	<Homecarousel />
+	<Suspense fallback={<div>Loading...</div>}>
+	<div style={{ background : 'white' }} className="container-fluid py-3">
 		<div className="container">
-			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
-				<div className="col-md-6 px-0">
-					<h2 className="fw-bold">Online solar Marketplace for Africans seeking to meet their energy needs</h2>
-					<p className="py-2">Ecoflux helps businesses and Individuals in Africa meet their energy needs using `renewable` Solar energy</p>
-					<ul>
-						<li>Ecoflux energy calculator</li>
-						<li>Flexible Payment Plan (Pay Small Small)</li>
-						<li>Energy as a Service(EAAS)</li>
-						<li>Affiliate Program</li>
-					</ul>
-					
-					<Stack spacing={2} direction="row">
-						<ColorButtonSecond variant="contained">Energy Audit</ColorButtonSecond>
-						<ColorButton variant="contained">Request for Installation</ColorButton>
-					</Stack>
-				
+		<div style={{ borderBottom:" solid 1px #dadada", marginBottom: "15px" }} className="d-flex">
+		  <div className="p-2"><h4 className="">Featured products</h4></div>
+		  <div className="ms-auto p-2 fw-bold"><Button onClick={() => router.push("/products")} variant="text">View all <ArrowForwardIosIcon sx={{ fontSize: 15 }} /></Button></div>
+		</div>
+			<div className="row">
+			{data?.length > 0 && data.map((item, key) => {
+				return (
+				<div key={key} className="col-6 col-md-4 col-xl-3">
+					<div className="grid_item">
+						<figure>
+							<a onClick={() => router.push("/product/"+item.prod_id)}>
+								<Image className="figure-img img-fluid" loader={() => `/${item.imagename}`} src={`/${item.imagename}`} height={300} width={300} />
+							</a>
+						</figure>
+						<a onClick={() => router.push("/product/"+item.prod_id)}>
+							<h3> {item.prod_name} </h3>
+						</a>
+					</div>
 				</div>
+			 );
+			})}	
+				
 			</div>
 		</div>
 	</div>
 	
-	<div style={{ background : 'white' }} className="container-fluid mb-md-0  py-5">
-	<div className="container">
-		<div className="row align-items-center h-100">
-			<div className="col-md-6">
-				<h2 className="fw-bold">Energy Assessment</h2>
-				<p className="py-2">Do a self-assessment of your energy needs and {`let's`} recommend a custom energy solution for you. With our solar calculator, you can directly calculate the power consumption of your devices and the total number of lightning hours. </p>
-				
-				<Stack spacing={2} direction="row">
-				  <ColorButtonSecond variant="contained">Start now</ColorButtonSecond>
-				</Stack>
-				
-			</div>
-			<div className="col-md-6 mt-2">
-				<div className="d-flex">
-					<div style={{ marginLeft:"20px 0px 0px 0px" }}>
-						<Image width={200} height={300} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/400/400" />
-					</div>
-					<div style={{ margin:"50px 0px 0px 50px" }}>
-						<Image width={200} height={300} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px", marginLeft: "10px" }} src="https://picsum.photos/400/400" />
-					</div>
-				</div>
-			</div>
-			
-			
-		</div>
-	 </div>
-		<br />
-	</div>
-	
-	<div style={{ background : '#4e5a62' }} className="container-fluid mb-md-0 py-5">
+	<div style={{ background : 'white' }} className="container-fluid py-4">
 		<div className="container">
-			<div className="row align-items-center h-100">
-				<div className="col-md-6 col-xl-5 justify-content-center">
-					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
-				</div>
-				<div className="col-md-6 col-xl-7 py-3">
-					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Simplifying Access to Affordable and Reliable Energy</h2>
-					<p className="py-2 text-light">With Ecoflux, you can experience a 24/7 electricity supply, power all your gadgets and equipments. You never get to worry about the increasing cost of fueling or the defeaning noise of your generators!</p>
-					<p className="text-light">Ecoflux is poised to disrupt the energy industry with its innovation-driven solution that enables Africans to make a self-assessment of their energy needs, place an order online for their solar power components and get their products delivered at competitive prices, without stress.</p>
-					
-					
-					<Stack spacing={2} direction="row">
-					  <ColorButton variant="contained">Learn More</ColorButton>
-					</Stack>
-				</div>
+	<div className="item-lg">
+		<article className="card card-banner" style={{ height:160, backgroundImage:'url(https://picsum.photos/200/200?grayscale)' }}>
+			<div className="card-body caption">
+				<h5 className="card-title mb-3"> Great offers {<br/>} just started now </h5>
+				<a href="#" className="btn btn-sm btn-warning">Discover</a>
 			</div>
-		</div>
-		<br />
+		</article>
+	</div>
+	</div>
 	</div>
 	
-	<div style={{ background : '#eeeeee00' }} className="container-fluid mb-md-0 py-5">
-		<div  className="container">
-			<div className="row align-items-center h-100">
-				<div className="col-md-7 col-xl-7">
-					<h2 style={{ color : "#a9cf46" }} className="fw-bold">Energy As a Service (EAAS)</h2>
-					<p className="py-2">At Ecoflux, we take care of all your energy power and energy concerns by empowering your homes, stores and businesses withour clean energy solutions. By selecting our Energy as a Service EAAS option, you are guaramteed clean and reliable power without the burden and hassle of installing, maintaining or even owning a solar/powe solution. Begin to enjoy power today at zero upfront cost. You only pay an agrees tariff based on the solution deployed.</p>
-					
-					<Stack spacing={2} direction="row">
-					  <ColorButtonSecond variant="contained">Get Started Now</ColorButtonSecond>
-					</Stack>
-				</div>
-				<div className="col-md-5 col-xl-5 py-3">
-					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
-				</div>
-			</div>
+	<div style={{ background : 'white' }} className="container-fluid">
+		<div className="container">
+			<div style={{ borderBottom:" solid 1px #dadada", marginBottom: "15px" }} className="d-flex">
+		  <div className="p-2"><h4 className="">Featured Category</h4></div>
+		  <div className="ms-auto p-2 fw-bold"><Button onClick={() => router.push("/category")} variant="text">View all <ArrowForwardIosIcon sx={{ fontSize: 15 }} /></Button></div>
 		</div>
-		
-	</div>
-	
-	<div style={{ background : 'rgb(232 255 171)' }} className="container-fluid py-5">
-		<div  className="container">
-			<div className="row align-items-center h-100">
-				<div className="col-md-5 col-xl-5">
-					<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
-				</div>
-				<div className="col-md-7 col-xl-7">
-					<h2 style={{ color : "#4e5a62" }} className="fw-bold">Flexible Payment Plan(Pay Small Small)</h2>
-					<p className="py-2">Our Pay As You Go payment model empowers our customers to pay in instalments by spreading the payments over a period of time</p>
-					
-					<Stack spacing={2} direction="row">
-					  <ColorButtonSecond variant="contained">Start Now</ColorButtonSecond>
-					</Stack>
-				</div>
-			</div>
-		</div>
-		
-	</div>
-	
-	<div style={{ background : '#fff8fa' }} className="container-fluid justify-content-md-center mb-md-0 py-5">
-		<div  className="container">
-			<div className="row align-items-center justify-content-md-center vh-75">
-				<div className="col-md-6 col-xl-6">
-					<h2 className="fw-bold text-center">Our Testimonials</h2>
-					<p className="py-2 text-center"></p>
-				</div>
-			</div>
-			<div className="row align-items-center justify-content-md-center">
-				<div className="col-md-12">
-					<Carousel breakPoints={breakPoints} showArrows={false} renderArrow={myArrow}
-						renderPagination={({ pages, activePage, onClick }) => {
-							return (
-							  <div className="d-flex">
-								{pages.map(page => {
-								  const isActivePage = activePage === page
-								  return (
-									<CircleIcon
-									  key={page}
-									  onClick={() => onClick(page)}
-									  active={`$isActivePage`}
-									  sx={{ color: "#b4ff00" }}
-									/>
-								  )
-								})}
-							  </div>
-							)
-						  }}
-					>
-						<div style={{ borderRadius: "20px 20px 20px 20px" }} className="card border-0 bg-light">
-							<div className="card-body">
-								<div className="text">Hello everybody, hope you are doing good at all times, i so much love this platform so much that i can not take my eyes off it any seconds</div>
-								<div className="d-flex mt-3">
-									<div style={{ border: "2px lime solid", borderRadius:"50%", overflow: 'hidden', width: "80px", height:"80px"    }}>
-										<Image objectFit="cover" width={80} height={80} alt="image" className="rounded-circle border" src="https://picsum.photos/250/150" />
-									</div>
-									<div style={{marginLeft: "14px"}} className="align-self-center">
-										<h5 className="my-0">Temitayo Ayodele</h5>
-										<p>Delar Incoporation</p>
-									</div>
-									<div className="align-self-center mx-auto"><FormatQuoteRoundedIcon fontSize="large" sx={{ fontSize: 85, color:"#b4ff00" }} /></div>
-								</div>
-							</div>
-						</div>
-						<div className="card bg-light rounded-pills">
-							<div className="card-body">
-								2
-							</div>
-						</div>
-						<div className="card bg-light rounded-pills">
-							<div className="card-body">
-								3
-							</div>
-						</div>
-						<div className="card bg-light rounded-pills">
-							<div className="card-body">
-								4
-							</div>
-						</div>
-						<div className="card bg-light rounded-pills">
-							<div className="card-body">
-								5
-							</div>
-						</div>
-					</Carousel>
-				</div>
-			</div>
+		<Owl category={category} />
 		</div>
 	</div>
 	
-	<footer className="page-footer font-small mdb-color pt-4" style={{ paddingLeft: "0px", background : '#4e5a62' }}>
 
-      <div className="container text-md-left">
-
-        <div className="row text-md-left mt-3 pb-3">
-
-          <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Company</h6>
-            <p><a href="">About us</a></p>
-			<p><a href="">How to buy and sell on Ecoflux</a></p>
-			<p><a href="">Become a vendor</a></p>
-			<p><a href="">Terms and Condition</a></p>
-			<p><a href="">Privacy Policy</a></p>
-			<p><a href="">Blogs</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Offerings</h6>
-            <p>
-              <a href="#!">Energy Power Audit</a>
-            </p>
-            <p>
-              <a href="#!">Our Services</a>
-            </p>
-            <p>
-              <a href="#!">Our Products</a>
-            </p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Get in touch</h6>
-            <p>
-              <a>123 Assbifi Road, Ikeja, Lagos, NG</a>
-            </p>
-            <p><a>+234 8034 451 220</a></p>
-			<p><a>info@ecofluxng.com</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-        
-          <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
-            <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
-				<ColorButton variant="contained"><EmailIcon />Send us an Email</ColorButton>
-			  </p>
-			
-          </div>
-          
-        </div>
-        
-      </div>
-     
-
-    </footer>
 	
-	
-		<div className="container-fluid bg-dark">
-			<div className="container">
-				<div style={{ height:100 }} className="row align-items-center text-white">
-					<div className="col-md-12">
-						<p className="text-white">Copyright &copy; 2022 All rights reserved</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	
-
-<Script id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
+	<Footer />
+	 </Suspense>
 <Script id="bootstrap_script" src="js/bootstrap.bundle.js" type="text/javascript"></Script>
 <Script id="my-script">{`document.querySelector('#navbarSideCollapse').addEventListener('click', function () {
     document.querySelector('.offcanvas-collapse').classList.toggle('open') })`}</Script>
@@ -509,7 +327,7 @@ li::marker
 }
 
 .hero{
-	background-image: linear-gradient(to right,rgb(255 255 255),#ff9e0070),url(https://picsum.photos/1600/400);
+	background-image: linear-gradient(to right,rgb(255 255 255),#3fff0000),url(/slider-1-ecofluxng.jpg);
 	background-size : cover
 }
 
@@ -517,13 +335,99 @@ li::marker
 	border: 3px solid #dee2e6!important;
 }
 
+#carouselHero .carousel-item img {  
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  height:50vh;
+}
 
+.card-banner {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    background: #0d6efd;
+    background-size: cover;
+    background-position: center center;
+}
 
+.card-banner .caption {
+    background-color: rgba(0,0,0,0.4);
+    z-index: 10;
+    padding: 1.4rem;
+    color: #fff;
+}
 
+.card-banner .card-body {
+    background-size: cover;
+    position: relative;
+    z-index: 10;
+}
+
+.grid_item {
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.grid_item figure img:nth-child(1) {
+    visibility: visible;
+    opacity: 1;
+    transform: translateZ(0);
+}
+
+.grid_item figure {
+    position: relative;
+    overflow: hidden;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+    -webkit-transition: all 0.7s ease;
+    -ms-transition: all 0.7s ease;
+    transition: all 0.7s ease;
+}
+
+.grid_item a h3 {
+    font-size: 14px;
+    font-size: 0.875rem;
+    margin: 3px 0 0 0;
+    color: #444;
+    font-weight: 500;
+    display: inline-block;
+}
 	
 `}
 </style>
    
     </>
   )
+}
+
+export async function getServerSideProps({ query, req, res }){
+
+	res.setHeader('Cache-Control','public, s-maxage=10, stale-while-revalidate=59')
+	
+	const cookies = getCookie('ecotoken', { req, res });
+  
+  try{
+	
+	const page =  1
+	const search = query.search || ""
+	
+	const [fetchproductsRes,fetchprofileRes,fetchcategoryRes] = await Promise.all([
+    axios.get(`${process.env.dbname}/ecoflux/api/fetchproducts/${page}/${search}`),
+    axios.get(`${process.env.dbname}/ecoflux/api/fetchprofile/${cookies}`),
+    axios.get(`${process.env.dbname}/ecoflux/api/fetchallcategory/${page}/${search}`)
+  ]);
+  const [data, user, category] = await Promise.all([
+    fetchproductsRes.data.result || [], 
+    fetchprofileRes.data.result || [],
+    fetchcategoryRes.data.result || []
+  ]);
+  return { props: { data, user, category } };
+	
+  } catch (error) {
+    console.log(error);
+  }
 }

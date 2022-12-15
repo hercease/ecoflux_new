@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useRef, useState, useEffect, ReactDOM } from "react";
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -17,6 +17,14 @@ import { styled } from '@mui/material/styles';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { useRouter } from 'next/router';
 import Script from "next/script"
+import Snackbar from '@mui/material/Snackbar';
+import axios from "axios";
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { useForm } from "react-hook-form";
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -65,10 +73,46 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 export default function Register() {
 	const router = useRouter();
+
+ const [state, setState] = useState({ sub_status: 'Register', disable_status: false, err_message: '',  open: false, vertical: 'top', severity:'success', horizontal: 'right', });
+ 
+ const { err_message, disable_status, sub_status, severity, vertical, horizontal, open } = state;
+
+const { register, watch, formState: { errors }, handleSubmit, reset, setValue, getValues } = useForm({
+    mode: "onChange"});
+	
+	const onSubmit = (data) => {
+		setState({ ...state, sub_status: 'Submitting.......', disable_status: true });
+		
+		axios.post(`${process.env.dbname}/ecoflux/api/register/` , data).then(function(response){
+			
+			if(response.data.status==1){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Register', disable_status: false, err_message: response.data.message });
+			}
+			else if(response.data.status==2){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Register', disable_status: false, err_message: response.data.message });
+			}
+			else if(response.data.status==3){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Register', disable_status: false, err_message: response.data.message });
+			}
+			else if(response.data.status==4){
+				setState({ ...state, open: true, severity:'success', sub_status: 'Register', disable_status: false, err_message: response.data.message });
+			}else{
+				setState({ ...state, open: true, severity:'error', sub_status: 'Register', disable_status: false, err_message: response.data });
+			}
+			
+		
+        }); 		 
+		
+	}
+	
+const handleClose = () => {
+	setState({ ...state, open: false });
+};
+	
 	
   return (
 	<>
-	
 		<Head>
 		<meta charSet="utf-8" />
 		<title>Ecoflux | Register</title>
@@ -89,28 +133,36 @@ export default function Register() {
 		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
 		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
-		<Script type="application/ld+json"
+		<script id="my_first_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Website",
-				"url": "https://ecoflux.com/register",
+				"url": "https://ecoflux.com/",
 				"potentialAction": { "@type": "SearchAction", "target": "https://ecoflux.com/{search_term_string}/", "query-input": "required name=search_term_string" },
 			  }),
 			}}
 		/>
-		<Script type="application/ld+json"
+		<script id="my_second_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Orgnaization",
-				"url": "https://ecoflux.com/register",
+				"url": "https://ecoflux.com/",
 				"name": "Ecoflux",
 				"logo": "https://ecoflux.com/log.png"
 			  }),
 			}}
 		/>
 	</Head>
+	
+	<Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose}>
+		<MuiAlert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+			{err_message}
+		</MuiAlert>
+	</Snackbar>
+
+
 	<div className="container">
 		<div className="row align-items-center vh-100">
 			<div className="col-md-4 offset-md-4">
@@ -126,32 +178,54 @@ export default function Register() {
 								<h1 className="text-dark">Sign Up</h1>
                             </div>
 							<div className="mt-1">
-								<form className="m-3">
+								<form onSubmit={handleSubmit(onSubmit)} className="m-3">
 
 									<div className="mb-3">
 										<FormControl fullWidth>
-											<Input placeholder="Email Address" label={'margin="dense"'} required id="input-with-icon-adornment" startAdornment={ <InputAdornment position="start"> <AccountCircle /> </InputAdornment> } />
+											<Input type="email" placeholder="Email Address" label={'margin="dense"'} id="input-with-icon-adornment" startAdornment={ <InputAdornment position="start"> <EmailIcon /> </InputAdornment> } {...register("email", { required: "Email is required", validate: (value) => value.includes("@", ".") || "Email must include '@' and '.' symbol"  })} />
+											{errors.email  && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> {errors.email.message} </div>}
 										</FormControl>
 									</div>
 									
 									<div className="mt-4">
 										<FormControl fullWidth>
-										<Input id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Full name" startAdornment={ <InputAdornment position="start"> <LockIcon /> </InputAdornment> } />
+										<Input type="text" name="name" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Full name" {...register("name", { required: true })} startAdornment={ <InputAdornment position="start"> <PersonIcon /> </InputAdornment> } />
+										{errors.name?.type === 'required' && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> Name is required</div>}
 										</FormControl>
 									</div>
 									
 									<div className="mt-4">
 										<FormControl fullWidth>
-										<Input type="number" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Mobile" startAdornment={ <InputAdornment position="start"> <PhoneIcon /> </InputAdornment> } />
+										<Input type="number" name="phone" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Mobile" {...register("phone", { required: true, minLength: 11, maxLength:11 })}  startAdornment={ <InputAdornment position="start"> <PhoneIcon /> </InputAdornment> } />
+										
+											{errors.phone?.type === 'required' && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> Phone is required</div>}
+											{errors.phone?.type === 'minLength' && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> Minimum input is 11 characters</div>}
 										</FormControl>
 									</div>
 									
-									<div className="mt-2">
+									<div className="mt-4">
+										<FormControl fullWidth>
+										<Input type="password" name="password" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Password" {...register("password", { required: true, minLength: 6, pattern: {value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/, message: 'Password must contain 1 Uppercase letter, 1 Lowercase, 1 Digit and 1 Special character ',}, })}  startAdornment={ <InputAdornment position="start"> <LockIcon /> </InputAdornment> } />
+											
+											{errors.password?.type === 'required' && (<div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> Password is required </div>) }
+											{errors.password?.type === 'minLength' && (<div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> Minimum character is 6 </div>) }
+											{errors.password && (<div className='text-danger mt-1'> {errors.password.message} </div>) }
+										</FormControl>
+									</div>
+									
+									<div className="mt-4">
+										<FormControl fullWidth>
+										<Input type="password" name="confirmpassword" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Confirm Password" {...register("confirmpassword", { required: "Please confirm password!", validate: { matchesPreviousPassword: (value) => { const { password } = getValues(); return password === value || "Password confirmation does not match"; }} })} startAdornment={ <InputAdornment position="start"> <LockIcon /> </InputAdornment> } />
+										{errors.confirmpassword  && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> {errors.confirmpassword.message} </div>}
+										</FormControl>
+									</div>
+									
+									<div className="mt-3">
 									By signing up {`you've`} agreed to our <Link href="/"><a style={{ textDecoration : "none", color: "#a9cf46"  }}>Terms & Conditions</a></Link> and <Link href="/"><a style={{ textDecoration : "none", color: "#a9cf46" }} >Privacy policy</a></Link>
                                     </div>
 									
 									<div className="mt-3 d-grid">
-									      <ColorButton color="success" type="submit" variant="contained">Register</ColorButton>
+									      <ColorButton color="success" disabled={disable_status} type="submit" variant="contained">{sub_status}</ColorButton>
                                     </div>
 									
 									<div className="mt-4 text-center">

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useRef, useState, useEffect, ReactDOM } from "react";
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -14,7 +14,14 @@ import LockIcon from '@mui/icons-material/Lock';
 import Button from '@mui/material/Button';
 import { green } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-import Script from "next/script"
+import Script from "next/script";
+import Snackbar from '@mui/material/Snackbar';
+import axios from "axios";
+import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { useForm } from "react-hook-form";
+import { useRouter } from 'next/router';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(green[500]),
@@ -27,9 +34,49 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 export default function Login() {
 	
+	const router = useRouter();
+
+ const [state, setState] = useState({ sub_status: 'Sign in', disable_status: false, err_message: '',  open: false, vertical: 'top', severity:'success', horizontal: 'right', });
+ 
+ const { err_message, disable_status, sub_status, severity, vertical, horizontal, open } = state;
+
+const { register, watch, formState: { errors }, handleSubmit, reset, setValue, getValues } = useForm({
+    mode: "onChange"});
+	
+	const onSubmit = (data) => {
+		setState({ ...state, sub_status: 'Checking.......', disable_status: true });
+		
+		axios.post(`${process.env.dbname}/ecoflux/api/login/` , data).then(function(response){
+			
+			if(response.data.status==1){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Login', disable_status: false, err_message: response.data.message });
+			}
+			else if(response.data.status==2){
+				setCookie(null, 'ecotoken', response.data.message, { maxAge: 365 * 24 * 60 * 60, path: '/', })
+				router.push('/products');
+			}
+			else if(response.data.status==4){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Sign in', disable_status: false, err_message: response.data.message });
+			}
+			else if(response.data.status==3){
+				setState({ ...state, open: true, severity:'error', sub_status: 'Sign in', disable_status: false, err_message: response.data.message });
+			}else{
+				setState({ ...state, open: true, severity:'error', sub_status: 'Sign in', disable_status: false, err_message: response.data });
+			}
+			
+        }); 		 
+		
+	
+	}
+	
+const handleClose = () => {
+	setState({ ...state, open: false });
+};
+
+
+	
   return (
 	<>
-	
 		<Head>
 		<meta charSet="utf-8" />
 		<title>Ecoflux | Login</title>
@@ -72,6 +119,13 @@ export default function Login() {
 			}}
 		/>
 	</Head>
+	
+	<Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose}>
+		<MuiAlert onClose={handleClose} severity={severity} variant="filled" sx={{ width: '100%' }}>
+			{err_message}
+		</MuiAlert>
+	</Snackbar>
+		
 	<div className="container">
 		<div className="row align-items-center vh-100">
 			<div className="col-md-4 offset-md-4">
@@ -87,16 +141,19 @@ export default function Login() {
 								<h1 className="text-dark">Login</h1>
                             </div>
 							<div className="mt-1">
-								<form className="m-3">
+								<form onSubmit={handleSubmit(onSubmit)}  className="m-3">
 									<div className="mb-3">
 										<FormControl fullWidth >
-											<Input placeholder="Email ID" label={'margin="dense"'} required id="input-with-icon-adornment" startAdornment={ <InputAdornment position="start"> <AccountCircle /> </InputAdornment> } />
+											<Input name="email" placeholder="Email ID" label={'margin="dense"'} id="input-with-icon-adornment" startAdornment={ <InputAdornment position="start"> <AccountCircle /> </InputAdornment> }  {...register("email", { required: "Email is required"  })} />
+											
+											{errors.email  && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> {errors.email.message} </div>}
 										</FormControl>
 									</div>
 									
 									<div className="mt-4">
 										<FormControl fullWidth >
-										<Input id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Password" startAdornment={ <InputAdornment position="start"> <LockIcon /> </InputAdornment> } />
+										<Input name="password" type="password" id="input-with-icon-adornment" label={'margin="dense"'} margin="dense" placeholder="Password" startAdornment={ <InputAdornment position="start"> <LockIcon /> </InputAdornment> } {...register("password", { required: "Password is required"  })} />
+										{errors.password  && <div className='text-danger mt-1'><ErrorOutlineRoundedIcon /> {errors.password.message} </div>}
 										</FormControl>
 									</div>
 									
@@ -106,7 +163,7 @@ export default function Login() {
 									
 									
 									<div className="mt-3 d-grid">
-									      <ColorButton color="success" type="submit" variant="contained">Login</ColorButton>
+									      <ColorButton disabled={disable_status} color="success" type="submit" variant="contained">{sub_status}</ColorButton>
                                     </div>
 									
 									<div className="mt-4 text-center">

@@ -19,7 +19,9 @@ import Script from "next/script"
 import Stack from '@mui/material/Stack';
 import EmailIcon from '@mui/icons-material/Email';
 import Navbar from "../components/navbar.js"
+import Footer from "../components/footer.js"
 import Divider from '@mui/material/Divider';
+import axios from "axios";
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -82,7 +84,7 @@ const ColorButtonSecond = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function Services() {
+export default function Audit() {
 	
 	const canvasbuttonref = useRef();
 	const canvascollapseref = useRef();
@@ -138,7 +140,7 @@ function Opencollapse(){
 	
 	<Navbar />
 	
-	<div style={{ backgroundImage : `url('https://picsum.photos/1600/400')` }} className="container-fluid mb-md-0 py-5">
+	<div className="container-fluid mb-md-0 py-5 hero">
 		<div className="container">
 			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
 				<div className="col-md-6 px-0">
@@ -159,8 +161,8 @@ function Opencollapse(){
 				
 			</div>
 			<div className="col-md-5 col-xl-5 py-3 text-center">
-				<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="https://picsum.photos/250/150" />
-			</div>
+				<Image width={400} height={250} alt="image" className="img-fluid w-100" style={{ borderRadius: "50px 50px 50px 50px" }} src="/energy-assement2-ecofluxng.jpg" />
+		</div>
 		</div>
 	 </div>
 		<br />
@@ -180,66 +182,8 @@ function Opencollapse(){
 		</div>
 	</div>
 	
-	<footer className="page-footer font-small mdb-color pt-4" style={{ paddingLeft: "0px", background : '#4e5a62' }}>
 
-      <div className="container text-md-left">
-
-        <div className="row text-md-left mt-3 pb-3">
-
-          <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Company</h6>
-            <p><a href="">About us</a></p>
-			<p><a href="">How to buy and sell on Ecoflux</a></p>
-			<p><a href="">Become a vendor</a></p>
-			<p><a href="">Terms and Condition</a></p>
-			<p><a href="">Privacy Policy</a></p>
-			<p><a href="">Blogs</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Offerings</h6>
-            <p>
-              <a href="#!">Energy Power Audit</a>
-            </p>
-            <p>
-              <a href="#!">Our Services</a>
-            </p>
-            <p>
-              <a href="#!">Our Products</a>
-            </p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Get in touch</h6>
-            <p>
-              <a>123 Assbifi Road, Ikeja, Lagos, NG</a>
-            </p>
-            <p><a>+234 8034 451 220</a></p>
-			<p><a>info@ecofluxng.com</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-        
-          <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
-            <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
-				<ColorButton variant="contained"><EmailIcon />Send us an Email</ColorButton>
-			  </p>
-			
-          </div>
-          
-        </div>
-        
-      </div>
-     
-
-    </footer>
+    <Footer />
 	
 
 <Script id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
@@ -359,6 +303,13 @@ body {
   display:block;
 }
 
+.hero{
+	background-image: linear-gradient(to right,rgb(255 255 255),#3fff0000),url(/masthead-audit-ecofluxng.jpg);
+	background-size : cover
+}
+
+
+
 	
 `}
 </style>
@@ -366,3 +317,31 @@ body {
     </>
   )
 }
+
+
+export async function getServerSideProps(context){
+	
+const cookies = context.req.cookies['ecotoken'] || ""
+
+try {
+	
+    const res = await axios.get(`${process.env.dbname}/ecoflux/api/fetchprofile/${cookies}`);
+	
+	if(!res.data.result){
+		return {
+			props:{
+				error :true
+			}
+		}
+	}
+
+	return {
+		props: {
+			data: res.data.result
+		}
+	};
+  } catch (error) {
+    console.log(error);
+  }
+}
+

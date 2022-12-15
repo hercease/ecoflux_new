@@ -50,22 +50,22 @@ export default function Forgot() {
 		<meta name="twitter:image" content="https://ecoflux.com/log.png" />
 		<meta name="theme-color" content="#a9cf46" />
 		<meta name="keywords" content="" />
-		<Script type="application/ld+json"
+		<script id="my_first_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Website",
-				"url": "https://ecoflux.com/forgot_password",
+				"url": "https://ecoflux.com/",
 				"potentialAction": { "@type": "SearchAction", "target": "https://ecoflux.com/{search_term_string}/", "query-input": "required name=search_term_string" },
 			  }),
 			}}
 		/>
-		<Script type="application/ld+json"
+		<script id="my_second_script" type="application/ld+json"
 			dangerouslySetInnerHTML= {{
 				__html: JSON.stringify({
 				"@context": "http://schema.org",
 				"@type": "Orgnaization",
-				"url": "https://ecoflux.com/forgot_password",
+				"url": "https://ecoflux.com/",
 				"name": "Ecoflux",
 				"logo": "https://ecoflux.com/log.png"
 			  }),

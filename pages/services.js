@@ -19,7 +19,9 @@ import Script from "next/script"
 import Stack from '@mui/material/Stack';
 import EmailIcon from '@mui/icons-material/Email';
 import Navbar from "../components/navbar.js"
+import Footer from "../components/footer.js"
 import Divider from '@mui/material/Divider';
+import axios from "axios";
 
 const BootstrapButton = styled(Button)({
   boxShadow: 'none',
@@ -82,7 +84,7 @@ const ColorButtonSecond = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function Services() {
+export default function Services({data}) {
 	
 	const canvasbuttonref = useRef();
 	const canvascollapseref = useRef();
@@ -135,9 +137,9 @@ function Opencollapse(){
 			}}
 		/>
 	</Head>
-	<Navbar />
+	<Navbar user={data} />
 	
-	<div style={{ backgroundImage : `url('https://picsum.photos/1600/400')` }} className="container-fluid mb-md-0 py-5 hero">
+	<div className="container-fluid mb-md-0 py-5 hero">
 		<div className="container">
 			<div className="align-items-center p-4 p-md-5 rounded text-bg-white">
 				<div className="col-md-6 px-0">
@@ -159,18 +161,21 @@ function Opencollapse(){
 		<div className="row align-items-center justify-content-md-center">
 			<div className="col-md-4 col-xl-4 mb-3">
 				<div className="img-gradient">
-					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200?grayscale" />
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="/SOlar-installation-ecofluxng.jpg" />
+					<div className="centered text-white">Solar System Installation</div>
 				</div>
 			</div>
 			
 			<div className="col-md-4 col-xl-4 mb-3">
 				<div className="img-gradient">
-					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200" />
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="/solar-mainteneance.jpg" />
+					<div className="centered text-white">Solar Maintenance and Repair</div>
 				</div>
 			</div>
 			<div className="col-md-4 col-xl-4 mb-3">
 				<div className="img-gradient">
-					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="https://picsum.photos/300/200?grayscale" />
+					<Image alt="image" width={300} height={200} style={{ borderRadius: "50px 50px 50px 50px" }} className="text-center" src="/training.jpg" />
+					<div className="centered text-white">Traning and Consultancy</div>
 				</div>
 			</div>
 		</div>
@@ -181,7 +186,7 @@ function Opencollapse(){
 	<div style={{ background : '#fff8fa' }} className="container-fluid justify-content-md-center mb-md-0 py-5">
 		<div  className="container">
 			<div className="row align-items-center justify-content-md-center vh-75">
-				<div className="col-md-6 col-xl-6">
+				<div className="col-md-8 col-xl-8">
 					<h2 className="fw-bold text-center">Produce Your Own Clean Energy</h2>
 					<p className="py-2 text-center">Send a request and we will call you back</p>
 				</div>
@@ -252,66 +257,7 @@ function Opencollapse(){
 		</div>
 	</div>
 	
-	<footer className="page-footer font-small mdb-color pt-4" style={{ paddingLeft: "0px", background : '#4e5a62' }}>
-
-      <div className="container text-md-left">
-
-        <div className="row text-md-left mt-3 pb-3">
-
-          <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Company</h6>
-            <p><a href="">About us</a></p>
-			<p><a href="">How to buy and sell on Ecoflux</a></p>
-			<p><a href="">Become a vendor</a></p>
-			<p><a href="">Terms and Condition</a></p>
-			<p><a href="">Privacy Policy</a></p>
-			<p><a href="">Blogs</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Offerings</h6>
-            <p>
-              <a href="#!">Energy Power Audit</a>
-            </p>
-            <p>
-              <a href="#!">Our Services</a>
-            </p>
-            <p>
-              <a href="#!">Our Products</a>
-            </p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-          <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Get in touch</h6>
-            <p>
-              <a>123 Assbifi Road, Ikeja, Lagos, NG</a>
-            </p>
-            <p><a>+234 8034 451 220</a></p>
-			<p><a>info@ecofluxng.com</a></p>
-          </div>
-
-          <hr className="w-100 clearfix d-md-none" />
-
-        
-          <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 className="text-capitalize mb-4 font-weight-bold">Follow us</h6>
-            <p className="text-white">
-              <i className="fas fa-home mr-3 text-white"></i> {`Can't`} find what you looking for?
-				<ColorButton variant="contained" size="large"><EmailIcon />Send us an Email</ColorButton>
-			  </p>
-			
-          </div>
-          
-        </div>
-        
-      </div>
-     
-
-    </footer>
+	<Footer />
 	
 
 <Script  id="jquery_script" src="js/jquery-3.5.0.min.js" type="text/javascript"></Script>
@@ -418,18 +364,33 @@ body {
     width: 100%;
     height: 100%;
     display: inline-block;
-  border-radius: 0px 0px 50px 50px;
+  border-radius: 50px 50px 50px 50px;
    background: -moz-linear-gradient(top, rgba(11,102,75,0.5) 0%, rgba(220, 66, 37, 0.5) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(220, 66, 37, 0.5)), color-stop(100%,rgba(0,47,75,0.5))); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top, rgba(0,47,75,0.5) 0%,rgba(220, 66, 37, 0.5) 100%); /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, rgba(0,47,75,0.5) 0%,rgba(220, 66, 37, 0.5) 100%); /* Opera 11.10+ */
   background: -ms-linear-gradient(top, rgba(0,47,75,0.5) 0%,rgba(220, 66, 37, 0.5) 100%); /* IE10+ */
-  background: linear-gradient(to bottom, rgba(30,75,0,0) 0%,rgba(40, 220, 37, 0.5) 100%); /* W3C */
+  background: linear-gradient(to bottom,rgba(30,75,0,0) 0%,rgb(41 255 37)100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#002f4b', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
 }
 .img-gradient img{
   display:block;
 }
+
+.hero{
+	background-image: linear-gradient(to right,rgb(255 255 255),#3fff0000),url(/masthead-services-ecofluxng.jpg);
+	background-size : cover
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: x-large;
+  z-index:100000
+}
+
 
 
 	
@@ -438,4 +399,32 @@ body {
    
     </>
   )
+}
+
+
+export async function getServerSideProps(context) {
+	
+ const cookies = context.req.cookies['ecotoken'] || ""
+ 
+try {
+	
+    const res = await axios.get(`${process.env.dbname}/ecoflux/api/fetchprofile/${cookies}`);
+	
+	if(!res.data.result){
+		return {
+			props:{
+				error :true
+			}
+		}
+	}
+
+    return {
+      props: {
+        data: res.data.result
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+  
 }
